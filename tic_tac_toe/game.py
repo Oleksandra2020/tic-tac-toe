@@ -4,11 +4,14 @@ from board import Board
 from btree import LinkedBinaryTree
 from btnode import BSTNode
 
+
 class NotEmptyCellError(Exception):
     pass
 
+
 class IndexOutOfRangeError(Exception):
     pass
+
 
 class Game():
     """Initializes the game"""
@@ -28,18 +31,12 @@ class Game():
                     possible.append((row, col))
         return possible
 
-    def win_check(self, board):
-        check = board.check_board()
-        if check is not None:
-            return check
-
     def tree_creation(self, board, count, tree, move, possible):
-        # print(possible)
-        if self.win_check(board) == 'x':
+        """Returns the number of winning combinations"""
+        if board.check_board() == 'x':
             count += 1
             return count
         if len(possible) == 1:
-            print('h')
             board.add_move(possible[0][0], possible[0][1], move)
             tree.insert_left = board
             return count
@@ -70,11 +67,12 @@ class Game():
         return count
 
     def game(self):
+        """Runs the game"""
         while True:
             print(self.board)
-            winner = self.win_check(self.board)
+            winner = self.board.check_board()
             if winner:
-                print(winner)
+                print(winner + ' won the game!')
             possible = self.possible_moves(self.board)
             user = int(input('Enter a number(0 to 8): '))
             if not(0 <= user <= 8):
@@ -84,55 +82,43 @@ class Game():
                 self.board.add_move(col, row, 'o')
             else:
                 raise IndexOutOfRangeError('This cell is not empty')
+            winner = self.board.check_board()
+            if winner:
+                print(self.board)
+                print(winner + ' won the game!')
             if len(possible) == 1:
-                self.board.add_move(possible[0][0], possible[0][1], 'x')
+                self.board.add_move(possible[0][1], possible[0][0], 'x')
                 return self.board.check_board()
-            # if len(possible) == 2:
-            #     self.board.add_move(possible[0][0], possible[0][1], 'x')
-            #     return self.board.check_board()
             node = BSTNode(self.board)
             tree = LinkedBinaryTree(node)
 
-            # possible = self.possible_moves(self.board)
             move1 = random.choice(possible)
             possible.remove(move1)
-            # self.board.remove_move(move1[1], move1[0])
             board1 = deepcopy(self.board)
-            board1.add_move(move1[0], move1[1], 'x')
+            board1.add_move(move1[1], move1[0], 'x')
             tree.insert_left(board1)
             tree1 = self.tree_creation(
                 board1, 0, tree.get_left_child(), 'x', possible)
-            print(possible, 'p')
             possible = self.possible_moves(self.board)
-            if move1 in possible:
-                possible.remove(move1)
-            print(possible, 'p')
             if possible:
-                print('e')
                 move2 = random.choice(possible)
-                # self.board.remove_move(move2[1], move2[0])
-                possible.remove(move2)
                 board2 = deepcopy(self.board)
-                board2.add_move(move2[0], move2[1], 'x')
+                board2.add_move(move2[1], move2[0], 'x')
                 tree.insert_right(board2)
-                print(move1, move2, 'm')
                 tree2 = self.tree_creation(
-                    board1, 0, tree.get_right_child(), 'x', possible)
+                    board2, 0, tree.get_right_child(), 'x', possible)
                 possible = self.possible_moves(self.board)
-                print(tree1, tree2, possible)
                 if tree1 > tree2:
-                    self.board = board1
+                    self.board.add_move(move1[1], move1[0], 'x')
                 else:
-                    self.board = board2
-                print(possible)
+                    self.board.add_move(move2[1], move2[0], 'x')
             else:
                 self.board = board1
-            winner = self.win_check(self.board)
-            print(winner)
+            winner = self.board.check_board()
             if winner:
                 print(self.board)
-                print(winner)
-                return
+                print(winner + ' won the game!')
+                break
 
 
 if __name__ == '__main__':
