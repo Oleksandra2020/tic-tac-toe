@@ -113,7 +113,7 @@ class Game():
                 else:
                     self.board.add_move(move2[1], move2[0], 'x')
             else:
-                self.board = board1
+                self.board.add_move(move1[1], move1[0], 'x')
             winner = self.board.check_board()
             if winner:
                 print(self.board)
