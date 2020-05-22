@@ -34,7 +34,7 @@ class Game:
     def tree_creation(self, board, count, tree, move, possible):
         """Returns the number of winning combinations"""
         if len(possible) == 1:
-            board.add_move(possible[0][0], possible[0][1], move)
+            board.add_move(possible[0][1], possible[0][0], move)
             tree.insert_left = board
             if board.check_board() == 'x':
                 count += 1
