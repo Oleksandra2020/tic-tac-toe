@@ -72,10 +72,6 @@ class Game:
         """Runs the game"""
         while True:
             print(self.board)
-            winner = self.board.check_board()
-            if winner:
-                print(winner + ' won the game!')
-                break
 
             possible = self.possible_moves(self.board)
             user = int(input('Enter a number(0 to 8): '))
