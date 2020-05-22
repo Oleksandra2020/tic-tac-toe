@@ -1,4 +1,5 @@
 class Board:
+    """Initializes the board of the game"""
 
     def __init__(self, first_row=['_', '_', '_'], second_row=['_', '_', '_'],
                  third_row=['_', '_', '_']):

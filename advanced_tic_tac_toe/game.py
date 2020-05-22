@@ -53,7 +53,7 @@ class Game:
                 possible.remove(move1)
                 board1 = deepcopy(board)
                 board1.add_move(move1[0], move1[1], move)
-                tree.insert_node(board1)
+                tree.insert_node(board1, True)
                 possible2 = deepcopy(possible)
 
                 count += self.tree_creation(board1, count, tree.get_children(i),
