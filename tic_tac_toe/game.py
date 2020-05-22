@@ -13,7 +13,7 @@ class IndexOutOfRangeError(Exception):
     pass
 
 
-class Game():
+class Game:
     """Initializes the game"""
 
     def __init__(self):
@@ -73,6 +73,8 @@ class Game():
             winner = self.board.check_board()
             if winner:
                 print(winner + ' won the game!')
+                break
+
             possible = self.possible_moves(self.board)
             user = int(input('Enter a number(0 to 8): '))
             if not(0 <= user <= 8):
@@ -82,13 +84,17 @@ class Game():
                 self.board.add_move(col, row, 'o')
             else:
                 raise IndexOutOfRangeError('This cell is not empty')
+            possible = self.possible_moves(self.board)
+
             winner = self.board.check_board()
             if winner:
                 print(self.board)
                 print(winner + ' won the game!')
-            if len(possible) == 1:
-                self.board.add_move(possible[0][1], possible[0][0], 'x')
-                return self.board.check_board()
+                break
+            winner = self.board.check_board()
+            if winner:
+                print(winner + ' won the game!')
+                break
             node = BSTNode(self.board)
             tree = LinkedBinaryTree(node)
 
@@ -102,16 +108,16 @@ class Game():
             possible = self.possible_moves(self.board)
             if possible:
                 move2 = random.choice(possible)
+                possible.remove(move2)
                 board2 = deepcopy(self.board)
                 board2.add_move(move2[1], move2[0], 'x')
                 tree.insert_right(board2)
                 tree2 = self.tree_creation(
                     board2, 0, tree.get_right_child(), 'x', possible)
-                possible = self.possible_moves(self.board)
-                if tree1 > tree2:
-                    self.board.add_move(move1[1], move1[0], 'x')
-                else:
+                if tree1 < tree2:
                     self.board.add_move(move2[1], move2[0], 'x')
+                else:
+                    self.board.add_move(move1[1], move1[0], 'x')
             else:
                 self.board.add_move(move1[1], move1[0], 'x')
             winner = self.board.check_board()

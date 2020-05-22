@@ -1,14 +1,12 @@
 class Board:
 
     def __init__(self, first_row=['_', '_', '_'], second_row=['_', '_', '_'],
-                 third_row=['_', '_', '_'], last_step=None, symb=None):
+                 third_row=['_', '_', '_']):
         """Initializes the board as well last step and its symbol"""
         self.first_row = first_row
         self.second_row = second_row
         self.third_row = third_row
         self.board = [first_row, second_row, third_row]
-        self.last_step = last_step
-        self.symb = symb
 
     def __str__(self):
         """Prints the state of the game"""
@@ -59,9 +57,9 @@ class Board:
             return 'o'
         poss = [0, 1, 2]
         for pos in poss:
-            if self.first_row[pos] == win_x or self.second_row[pos] == win_x or self.third_row[pos] == win_x:
+            if self.first_row[pos] + self.second_row[pos] + self.third_row[pos] == win_x:
                 return 'x'
-            elif self.first_row[pos] == win_o or self.second_row[pos] == win_o or self.third_row[pos] == win_o:
+            elif self.first_row[pos] + self.second_row[pos] + self.third_row[pos] == win_o:
                 return 'o'
         verbose = True
         for row in range(3):
