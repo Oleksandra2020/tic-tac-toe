@@ -58,8 +58,8 @@ class Game:
 
                 count += self.tree_creation(board1, count, tree.get_children(i),
                                             next_move, possible)
-            i = j
-            j += 1
+                i = j
+                j += 1
         return count
 
     def game(self):
